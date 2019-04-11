@@ -1,4 +1,4 @@
-# Simple UEFI Bootloader
+# Simple UEFI Bootloader ARM64
 A UEFI bootloader for bare-metal ARM64 applications. Looking for the x86-64 version? Get it here: https://github.com/KNNSpeed/Simple-UEFI-Bootloader  
 
 **Version 1.5**
