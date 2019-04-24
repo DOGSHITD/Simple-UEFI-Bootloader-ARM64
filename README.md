@@ -1,13 +1,13 @@
 # Simple UEFI Bootloader ARM64
 A UEFI bootloader for bare-metal ARM64 applications. Looking for the x86-64 version? Get it here: https://github.com/KNNSpeed/Simple-UEFI-Bootloader  
 
-**Version 2.0**
+**Version 2.1**
 
 This bootloader is like a much simpler version of GRUB/Elilo/Windows Boot Manager, but mainly meant for writing your own operating system-less ARM64 programs, kernels, or full operating systems. It supports Windows, Linux, and Mac executable binaries (PE32+, 64-bit ELF, and 64-bit Mach-O formats). It also supports... Well, I'll let you figure that one out yourself. ;)
 
 ***See the "Releases" tab for usage information and downloads, and please post any bugs, feature requests, etc. in "Issues."***  
 
-A minimal, cross-platform development environment for making your own programs, kernels, and/or operating systems that use this bootloader can be found here (demo binary programs are also there): https://github.com/KNNSpeed/Simple-Kernel-ARM64 (NOTE: does not exist yet)
+A minimal, cross-platform development environment for making your own programs, kernels, and/or operating systems that use this bootloader can be found here (demo binary programs are also there): https://github.com/KNNSpeed/Simple-Kernel-ARM64  
 
 ## Bootloader Features  
 
@@ -137,6 +137,8 @@ Requires GCC 7.1.0 or later and Binutils 2.29.1 or later. I cannot make any guar
     *That's it! It should compile and a binary called "BOOTAA64.EFI" will be output into the "Backend" folder.*
 
 ## Change Log
+
+V2.1 (4/24/2019) - Fixed a regression introduced in V1.4 (it isn't a bug with this code, it's a widespread issue with UEFI firmware): The ClearScreen function, which is just supposed to clear the screen to whatever the background color is and reset the cursor to (0,0), behaves wildly differently depending on firmware. Some video drivers don't reset cursor position, some do a whole video mode reset and set the video mode to 0, effectively destroying any other mode previously set, and some actually work correctly. I forgot about this and left calls to ClearScreen in, but they're gone now. An extra newline now takes the place of where ClearScreen use to be used. Also updated backend GNU-EFI to use the UEFI 2.x OpenProtocol() function instead of the now-archaic EFI 1.0 HandleProtocol() function (this loader was never intended for EFI 1.x devices anyway).
 
 V2.0 (4/23/2019) - Added the need for Kernel64.txt in the same style as Kernelcmd.txt from V2.x of https://github.com/KNNSpeed/UEFI-Stub-Loader. With this major change, kernels don't need to be named Kernel64 anymore, a string of load options can be passed to kernels, and multi-booting on one machine is supported by way of using the machine's built-in UEFI boot manager. How to format Kernel64.txt has been added to both this document and the usage information in "Releases." Also added new loader params: ESP_Root_Device_Path, ESP_Root_Size, Kernel_Path, Kernel_Path_Size, Kernel_Options, Kernel_Options_Size.
 

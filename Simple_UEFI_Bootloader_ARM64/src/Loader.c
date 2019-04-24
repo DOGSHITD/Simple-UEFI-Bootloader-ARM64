@@ -2,7 +2,7 @@
 //  Simple UEFI Bootloader: Kernel Loader and Entry Point Jump
 //==================================================================================================================================
 //
-// Version 2.0 ARM64
+// Version 2.1 ARM64
 //
 // Author:
 //  KNNSpeed
@@ -55,8 +55,8 @@ EFI_STATUS GoTime(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics, void *RSDPTable
 
 	EFI_LOADED_IMAGE_PROTOCOL *LoadedImage;
 
-  // Get a pointer to the (loaded image) pointer of BOOTX64.EFI
-  // Pointer 1 -> Pointer 2 -> BOOTX64.EFI
+  // Get a pointer to the (loaded image) pointer of BOOTAA64.EFI
+  // Pointer 1 -> Pointer 2 -> BOOTAA64.EFI
   // OpenProtocol wants Pointer 1 as input to give you Pointer 2.
 	GoTimeStatus = ST->BootServices->OpenProtocol(ImageHandle, &LoadedImageProtocol, (void**)&LoadedImage, ImageHandle, NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
   if(EFI_ERROR(GoTimeStatus))
@@ -91,8 +91,8 @@ EFI_STATUS GoTime(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics, void *RSDPTable
 
   EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *FileSystem;
 
-  // Parent device of BOOTX64.EFI (the ImageHandle originally passed in is this very file)
-  // Loadedimage is an EFI_LOADED_IMAGE_PROTOCOL pointer that points to BOOTX64.EFI
+  // Parent device of BOOTAA64.EFI (the ImageHandle originally passed in is this very file)
+  // Loadedimage is an EFI_LOADED_IMAGE_PROTOCOL pointer that points to BOOTAA64.EFI
   GoTimeStatus = ST->BootServices->OpenProtocol(LoadedImage->DeviceHandle, &FileSystemProtocol, (void**)&FileSystem, ImageHandle, NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
   if(EFI_ERROR(GoTimeStatus))
   {
@@ -113,7 +113,7 @@ EFI_STATUS GoTime(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics, void *RSDPTable
   // Below Kernel64.txt loading & parsing code adapted from V2.1 of https://github.com/KNNSpeed/UEFI-Stub-Loader
 
   // Locate Kernel64.txt, which should be in the same directory as this program
-  // ((FILEPATH_DEVICE_PATH*)LoadedImage->FilePath)->PathName is, e.g., \EFI\BOOT\BOOTX64.EFI
+  // ((FILEPATH_DEVICE_PATH*)LoadedImage->FilePath)->PathName is, e.g., \EFI\BOOT\BOOTAA64.EFI
 
   CHAR16 * BootFilePath = ((FILEPATH_DEVICE_PATH*)LoadedImage->FilePath)->PathName;
 
@@ -2440,11 +2440,6 @@ EFI_STATUS GoTime(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics, void *RSDPTable
   Print(L"Loader block allocated, size of structure: %llu\r\n", sizeof(LOADER_PARAMS));
   Keywait(L"About to get MemMap and exit boot services...\r\n");
 #endif
-
-  // Hm... This appears to also reset the video mode to mode 0...
-  // Clear screen while we still have EFI services
-  // ST->ConOut->ClearScreen(ST->ConOut);
-  // Eh, this won't matter once debug statements are turned off, anyways, since the only time user input is required is before GOP SetMode
 
  //----------------------------------------------------------------------------------------------------------------------------------
  //  Get Memory Map and Exit Boot Services

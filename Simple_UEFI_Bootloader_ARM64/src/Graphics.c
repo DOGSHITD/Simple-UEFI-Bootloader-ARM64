@@ -2,7 +2,7 @@
 //  Simple UEFI Bootloader: Graphics Functions
 //==================================================================================================================================
 //
-// Version 2.0 ARM64
+// Version 2.1 ARM64
 //
 // Author:
 //  KNNSpeed
@@ -76,7 +76,7 @@ STATIC CONST CHAR16 PxFormats[5][17] = {
 };
 
 EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
-{ // Declaring a pointer only allocates 8 bytes (x64) for that pointer. Buffers must be manually allocated memory via AllocatePool and then freed with FreePool when done with.
+{ // Declaring a pointer only allocates 8 bytes (64-bit) for that pointer. Buffers must be manually allocated memory via AllocatePool and then freed with FreePool when done with.
 
   Graphics->NumberOfFrameBuffers = 0;
 
@@ -831,9 +831,10 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
       Print(L"3. Configure all to use 1024x768\r\n");
       Print(L"\r\nNote: The \"active display(s)\" on a GPU are determined by the GPU's firmware, and not all output ports may be currently active.\r\n");
       Print(L"\r\nPlease select an option.\r\n");
+
       while ((GOPStatus = ST->ConIn->ReadKeyStroke(ST->ConIn, &Key)) == EFI_NOT_READY);
-      ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
-      Print(L"Option %c selected.\r\n\n", Key.UnicodeChar);
+
+      Print(L"\r\nOption %c selected.\r\n\n", Key.UnicodeChar);
     }
     DevNum = (UINT64)(Key.UnicodeChar - 0x30); // Convert user input character from unicode to number
     Key.UnicodeChar = 0; // Reset input
@@ -951,9 +952,10 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
           }
 
           Print(L"\r\nPlease select a graphics mode. (0 - %u)\r\n", GOPTable->Mode->MaxMode - 1);
+
           while ((GOPStatus = ST->ConIn->ReadKeyStroke(ST->ConIn, &Key)) == EFI_NOT_READY);
-          ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
-          Print(L"Selected graphics mode %c.\r\n\n", Key.UnicodeChar);
+
+          Print(L"\r\nSelected graphics mode %c.\r\n\n", Key.UnicodeChar);
         }
         mode = (UINT32)(Key.UnicodeChar - 0x30);
         Key.UnicodeChar = 0;
@@ -1000,7 +1002,6 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
       Keywait(L"Current mode info assigned.\r\n");
 #endif
 
-      ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
     } // End for each individual DevNum
   }
   else if((NumHandlesInHandleBuffer > 1) && (DevNum == 1))
@@ -1029,9 +1030,10 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
       }
       Print(L"\r\n");
       Print(L"Please select an output device. (0 - %llu)\r\n", NumHandlesInHandleBuffer - 1);
+
       while ((GOPStatus = ST->ConIn->ReadKeyStroke(ST->ConIn, &Key)) == EFI_NOT_READY);
-      ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
-      Print(L"Device %c selected.\r\n\n", Key.UnicodeChar);
+
+      Print(L"\r\nDevice %c selected.\r\n\n", Key.UnicodeChar);
     }
     DevNum = (UINT64)(Key.UnicodeChar - 0x30); // Convert user input character from UTF-16 to number
     Key.UnicodeChar = 0; // Reset input
@@ -1124,9 +1126,10 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
         }
 
         Print(L"\r\nPlease select a graphics mode. (0 - %u)\r\n", GOPTable->Mode->MaxMode - 1);
+
         while ((GOPStatus = ST->ConIn->ReadKeyStroke(ST->ConIn, &Key)) == EFI_NOT_READY);
-        ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
-        Print(L"Selected graphics mode %c.\r\n\n", Key.UnicodeChar);
+
+        Print(L"\r\nSelected graphics mode %c.\r\n\n", Key.UnicodeChar);
       }
       mode = (UINT32)(Key.UnicodeChar - 0x30);
       Key.UnicodeChar = 0;
@@ -1174,7 +1177,6 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
     Keywait(L"Current mode info assigned.\r\n");
 #endif
 
-    ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
   // End configure one only
   }
   else if((NumHandlesInHandleBuffer > 1) && (DevNum == 2))
@@ -1262,7 +1264,6 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
 
     } // End for each individual DevNum
 
-    ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position, only need to do this once for this auto-mode
     // End default res for each
   }
   else if((NumHandlesInHandleBuffer > 1) && (DevNum == 3))
@@ -1384,7 +1385,6 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
 
     } // End for each individual DevNum
 
-    ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position, only need to do this once for this auto-mode
     // End 1024x768
   }
   else
@@ -1493,9 +1493,10 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
         }
 
         Print(L"\r\nPlease select a graphics mode. (0 - %u)\r\n", GOPTable->Mode->MaxMode - 1);
+
         while ((GOPStatus = ST->ConIn->ReadKeyStroke(ST->ConIn, &Key)) == EFI_NOT_READY);
-        ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
-        Print(L"Selected graphics mode %c.\r\n\n", Key.UnicodeChar);
+
+        Print(L"\r\nSelected graphics mode %c.\r\n\n", Key.UnicodeChar);
       }
       mode = (UINT32)(Key.UnicodeChar - 0x30);
       Key.UnicodeChar = 0;
@@ -1542,7 +1543,6 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
     Keywait(L"Current mode info assigned.\r\n");
 #endif
 
-    ST->ConOut->ClearScreen(ST->ConOut); // Clear screen to reset cursor position
   // End single GPU
   }
 
