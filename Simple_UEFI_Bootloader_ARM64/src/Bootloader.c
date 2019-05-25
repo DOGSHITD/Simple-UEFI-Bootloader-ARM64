@@ -198,7 +198,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
   #endif
 #endif
   Print(L"Copyright (c) 2017-2019 KNNSpeed\r\n\n");
-  Print(L"For software licensing information and related usage terms, please refer to the LICENSE file found at https://github.com/KNNSpeed/Simple-UEFI-Bootloader.\r\n\n");
+  Print(L"For software licensing information and related usage terms, please refer to the LICENSE file found at https://github.com/KNNSpeed/Simple-UEFI-Bootloader-ARM64.\r\n\n");
 
   UINT64 timeout_seconds = 10; // 10 seconds
   EFI_INPUT_KEY Key_Check = {0};
