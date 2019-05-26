@@ -186,15 +186,15 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
   Print(L"%02hhu/%02hhu/%04hu - %02hhu:%02hhu:%02hhu.%u\r\n\n", Now.Month, Now.Day, Now.Year, Now.Hour, Now.Minute, Now.Second, Now.Nanosecond); // GNU-EFI apparently has a print function for time... Oh well.
 #ifdef MAIN_DEBUG_ENABLED
   #ifdef MEMORY_DEBUG_ENABLED // Very slow memory debug version
-    Print(L"Simple UEFI Bootloader - V%u.%u DEBUG (Memory)\r\n", MAJOR_VER, MINOR_VER);
+    Print(L"Simple UEFI Bootloader ARM64 - V%u.%u DEBUG (Memory)\r\n", MAJOR_VER, MINOR_VER);
   #else // Standard debug version
-    Print(L"Simple UEFI Bootloader - V%u.%u DEBUG\r\n", MAJOR_VER, MINOR_VER);
+    Print(L"Simple UEFI Bootloader ARM64 - V%u.%u DEBUG\r\n", MAJOR_VER, MINOR_VER);
   #endif
 #else
   #ifdef FINAL_LOADER_DEBUG_ENABLED // Lite debug version
-    Print(L"Simple UEFI Bootloader - V%u.%u DEBUG (Lite)\r\n", MAJOR_VER, MINOR_VER);
+    Print(L"Simple UEFI Bootloader ARM64 - V%u.%u DEBUG (Lite)\r\n", MAJOR_VER, MINOR_VER);
   #else // Release version
-    Print(L"Simple UEFI Bootloader - V%u.%u\r\n", MAJOR_VER, MINOR_VER);
+    Print(L"Simple UEFI Bootloader ARM64 - V%u.%u\r\n", MAJOR_VER, MINOR_VER);
   #endif
 #endif
   Print(L"Copyright (c) 2017-2019 KNNSpeed\r\n\n");
